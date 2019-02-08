@@ -1,4 +1,4 @@
-package com.springboot.angular.panel.resources.auth;
+package com.springboot.angular.panel.controllers.auth;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/auth")
-public class VerificationResource {
+public class VerificationController {
 
 	@RequestMapping(value = "/email-verification", method = RequestMethod.GET)
 	public ResponseEntity<String> verify() {

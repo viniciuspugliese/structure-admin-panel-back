@@ -15,12 +15,14 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted_at = current_timestamp() WHERE id = ?")
+@Where(clause = "deleted_at IS NULL")
 public class User implements Serializable {
 	private static final long serialVersionUID = 2632888204447997135L;
 
@@ -39,15 +41,18 @@ public class User implements Serializable {
 	private Date passwordExpiresAt;
 
 	@CreationTimestamp
-	protected Date createdAt;
+	private Date createdAt;
 
 	@UpdateTimestamp
-	protected Date updatedAt;
+	private Date updatedAt;
 
 	private Date deletedAt;
 
 	@OneToMany(mappedBy = "user")
 	private List<UserRole> userRoles = new ArrayList<UserRole>();
+
+	@OneToMany(mappedBy = "user")
+	private List<HttpLog> log = new ArrayList<HttpLog>();
 	
 	public User() {
 		

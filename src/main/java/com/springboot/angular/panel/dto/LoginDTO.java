@@ -5,16 +5,19 @@ import java.io.Serializable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import com.springboot.angular.panel.dto.annotations.Exists;
+
 public class LoginDTO implements Serializable {
 	private static final long serialVersionUID = 4865004936449715245L;
 
 	@NotEmpty(message = "O email é obrigatório.")
 	@Email(message = "O email é  inválido.")
+	@Exists(message = "O email não existe no sistema.", table = "users", collumn = "email")
 	private String email;
 
 	@NotEmpty(message = "A senha é obrigatória.")
 	private String password;
-	
+
 	public LoginDTO() {
 		
 	}

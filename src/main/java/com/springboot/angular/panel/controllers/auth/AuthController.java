@@ -1,11 +1,10 @@
-package com.springboot.angular.panel.resources.auth;
+package com.springboot.angular.panel.controllers.auth;
 
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,15 +17,14 @@ import com.springboot.angular.panel.services.auth.AuthService;
 
 @RestController
 @RequestMapping(value = "/auth")
-public class AuthResource {
+public class AuthController {
 
 	@Autowired
 	private AuthService authService;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<String> login(@Valid @RequestBody LoginDTO loginDTO) {
-		authService.login(loginDTO);
-		return ResponseEntity.ok().body("Auth login");
+	public ResponseEntity<List<User>> login(@Valid @RequestBody LoginDTO loginDTO) {
+		return ResponseEntity.ok().body(authService.login(loginDTO));
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
