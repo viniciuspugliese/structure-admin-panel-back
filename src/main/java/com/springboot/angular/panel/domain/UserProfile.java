@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,30 +18,23 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted_at = current_timestamp() WHERE id = ?")
+@Table(name = "user_profiles")
+@SQLDelete(sql = "UPDATE user_profiles SET deleted_at = current_timestamp() WHERE id = ?")
 @Where(clause = "deleted_at IS NULL")
-public class User implements Serializable {
-	private static final long serialVersionUID = 2632888204447997135L;
+public class UserProfile implements Serializable {
+	private static final long serialVersionUID = 795791938646856434L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(nullable = false)
-	private String nome;
+	@ManyToOne
+	@JoinColumn(name = "profile_id")
+	private Profile profile;
 
-	@Column(nullable = false, unique = true)
-	private String email;
-
-	@Column(nullable = false)
-	private String password;
-
-	@Column(nullable = true)
-	private Date emailVerifiedAt;
-
-	@Column(nullable = true)
-	private Date passwordExpiresAt;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@CreationTimestamp
 	@Column(nullable = false)
@@ -52,26 +47,15 @@ public class User implements Serializable {
 	@Column(nullable = true)
 	private Date deletedAt;
 
-	public User() {
+	public UserProfile() {
 		
 	}
 
-	public User(Integer id, String nome, String email, String password, Date emailVerifiedAt, Date passwordExpiresAt) {
+	public UserProfile(Integer id, Profile profile, User user) {
 		super();
 		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.password = password;
-		this.emailVerifiedAt = emailVerifiedAt;
-		this.passwordExpiresAt = passwordExpiresAt;
-	}
-
-	public User(String nome, String email, String password, Date passwordExpiresAt) {
-		super();
-		this.nome = nome;
-		this.email = email;
-		this.password = password;
-		this.passwordExpiresAt = passwordExpiresAt;
+		this.profile = profile;
+		this.user = user;
 	}
 
 	public Integer getId() {
@@ -82,44 +66,20 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public Profile getProfile() {
+		return profile;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
-	public String getEmail() {
-		return email;
+	public User getUser() {
+		return user;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Date getEmailVerifiedAt() {
-		return emailVerifiedAt;
-	}
-
-	public void setEmailVerifiedAt(Date emailVerifiedAt) {
-		this.emailVerifiedAt = emailVerifiedAt;
-	}
-
-	public Date getPasswordExpiresAt() {
-		return passwordExpiresAt;
-	}
-
-	public void setPasswordExpiresAt(Date passwordExpiresAt) {
-		this.passwordExpiresAt = passwordExpiresAt;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Date getCreatedAt() {
@@ -162,7 +122,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		UserProfile other = (UserProfile) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

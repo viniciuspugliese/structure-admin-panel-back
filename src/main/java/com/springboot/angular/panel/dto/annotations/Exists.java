@@ -17,13 +17,15 @@ import com.springboot.angular.panel.dto.annotations.validations.ExistsValidator;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Exists {
 	
-    String message() default "";
+    public String message() default "";
 
-    String table() default "";
+    public String table() default "";
 
-    String collumn() default "";
+    public String collumn() default "";
 
-	Class<?>[] groups() default {};
+    public String conditions() default "";
+    
+    public Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default{};
+    public Class<? extends Payload>[] payload() default{};
 }

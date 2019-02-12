@@ -11,13 +11,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JWTUtil {
-	
-	@Value("${jwt.secret}")
-	private String secret;
 
-	@Value("${jwt.expiration}")
-	private Long expiration;
-	
+    @Value("${security.jwt.expiration}")
+    private Long expiration;
+
+    @Value("${security.jwt.secret}")
+    private String secret;
+
 	public String generateToken(String email) {
 		return Jwts.builder()
 				.setSubject(email)
@@ -29,17 +29,15 @@ public class JWTUtil {
 	public Boolean tokenValid(String token) {
 		Claims claims = getClaims(token);
 		
-		if (claims != null) {
-			String email = claims.getSubject();
-			Date expirationDate = claims.getExpiration();
-			Date now = new Date(System.currentTimeMillis());
-			
-			if (email != null && expirationDate != null && now.before(expirationDate)) {
-				return true;
-			}
+		if (claims == null) {
+			return false;
 		}
 		
-		return false;
+		String email = claims.getSubject();
+		Date expirationDate = claims.getExpiration();
+		Date now = new Date(System.currentTimeMillis());
+		
+		return (email != null && expirationDate != null && now.before(expirationDate));
 	}
 	
 	public String getEmail(String token) {

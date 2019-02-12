@@ -16,30 +16,21 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted_at = current_timestamp() WHERE id = ?")
+@Table(name = "profiles")
+@SQLDelete(sql = "UPDATE profiles SET deleted_at = current_timestamp() WHERE id = ?")
 @Where(clause = "deleted_at IS NULL")
-public class User implements Serializable {
-	private static final long serialVersionUID = 2632888204447997135L;
+public class Profile implements Serializable {
+	private static final long serialVersionUID = 7673104771803006323L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(nullable = false)
-	private String nome;
-
-	@Column(nullable = false, unique = true)
-	private String email;
+	private String name;
 
 	@Column(nullable = false)
-	private String password;
-
-	@Column(nullable = true)
-	private Date emailVerifiedAt;
-
-	@Column(nullable = true)
-	private Date passwordExpiresAt;
+	private String description;
 
 	@CreationTimestamp
 	@Column(nullable = false)
@@ -52,26 +43,15 @@ public class User implements Serializable {
 	@Column(nullable = true)
 	private Date deletedAt;
 
-	public User() {
+	public Profile() {
 		
 	}
 
-	public User(Integer id, String nome, String email, String password, Date emailVerifiedAt, Date passwordExpiresAt) {
+	public Profile(Integer id, String name, String description) {
 		super();
 		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.password = password;
-		this.emailVerifiedAt = emailVerifiedAt;
-		this.passwordExpiresAt = passwordExpiresAt;
-	}
-
-	public User(String nome, String email, String password, Date passwordExpiresAt) {
-		super();
-		this.nome = nome;
-		this.email = email;
-		this.password = password;
-		this.passwordExpiresAt = passwordExpiresAt;
+		this.name = name;
+		this.description = description;
 	}
 
 	public Integer getId() {
@@ -82,44 +62,20 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Date getEmailVerifiedAt() {
-		return emailVerifiedAt;
-	}
-
-	public void setEmailVerifiedAt(Date emailVerifiedAt) {
-		this.emailVerifiedAt = emailVerifiedAt;
-	}
-
-	public Date getPasswordExpiresAt() {
-		return passwordExpiresAt;
-	}
-
-	public void setPasswordExpiresAt(Date passwordExpiresAt) {
-		this.passwordExpiresAt = passwordExpiresAt;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Date getCreatedAt() {
@@ -162,7 +118,7 @@ public class User implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Profile other = (Profile) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

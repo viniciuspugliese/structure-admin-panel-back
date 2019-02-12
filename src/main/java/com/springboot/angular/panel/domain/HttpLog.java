@@ -3,6 +3,7 @@ package com.springboot.angular.panel.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "http_logs")
-@SQLDelete(sql = "UPDATE logs SET deleted_at = current_timestamp() WHERE id = ?")
+@SQLDelete(sql = "UPDATE http_logs SET deleted_at = current_timestamp() WHERE id = ?")
 @Where(clause = "deleted_at IS NULL")
 public class HttpLog implements Serializable {
 	private static final long serialVersionUID = 2632888204447997135L;
@@ -27,18 +28,25 @@ public class HttpLog implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Column(nullable = true)
 	private String ip;
 
+	@Column(nullable = false)
 	private String url;
 
+	@Column(nullable = false)
 	private Integer httpStatus;
-	
+
+	@Column(nullable = true)
 	private Integer excepitonLineNumber;
-	
+
+	@Column(nullable = true)
 	private String excepitonClass;
 
+	@Column(nullable = true)
 	private String excepitonMethod;
-	
+
+	@Column(nullable = true)
 	private String exceptionMessage;
 	
 	@ManyToOne
@@ -46,11 +54,14 @@ public class HttpLog implements Serializable {
 	private User user;
 	
 	@CreationTimestamp
+	@Column(nullable = false)
 	private Date createdAt;
 
 	@UpdateTimestamp
+	@Column(nullable = false)
 	private Date updatedAt;
 
+	@Column(nullable = true)
 	private Date deletedAt;
 
 	public HttpLog() {
@@ -58,8 +69,7 @@ public class HttpLog implements Serializable {
 	}
 
 	public HttpLog(Integer id, String ip, String url, Integer httpStatus, Integer excepitonLineNumber,
-			String excepitonClass, String excepitonMethod, String exceptionMessage, User user, Date createdAt,
-			Date updatedAt, Date deletedAt) {
+			String excepitonClass, String excepitonMethod, String exceptionMessage, User user) {
 		super();
 		this.id = id;
 		this.ip = ip;
@@ -70,9 +80,6 @@ public class HttpLog implements Serializable {
 		this.excepitonMethod = excepitonMethod;
 		this.exceptionMessage = exceptionMessage;
 		this.user = user;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
 	}
 
 	public Integer getId() {
@@ -194,13 +201,5 @@ public class HttpLog implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "HttpLog [id=" + id + ", ip=" + ip + ", url=" + url + ", httpStatus=" + httpStatus
-				+ ", excepitonLineNumber=" + excepitonLineNumber + ", excepitonClass=" + excepitonClass
-				+ ", excepitonMethod=" + excepitonMethod + ", exceptionMessage=" + exceptionMessage + ", user=" + user
-				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
 	}
 }

@@ -1,13 +1,16 @@
 package com.springboot.angular.panel.services.auth;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.angular.panel.domain.User;
 import com.springboot.angular.panel.dto.LoginDTO;
 import com.springboot.angular.panel.repositories.UserRepository;
+import com.springboot.angular.panel.security.JWTAuthenticationFilter;
+import com.springboot.angular.panel.security.JWTUtil;
+import com.springboot.angular.panel.security.UserSecurity;
+import com.springboot.angular.panel.security.exception.UnauthorizedException;
+import com.springboot.angular.panel.services.TokenService;
 
 @Service
 public class AuthService {
@@ -15,45 +18,31 @@ public class AuthService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public List<User> login(LoginDTO loginDTO) {
-		return userRepository.findAll();
+	@Autowired
+	private JWTAuthenticationFilter jwtAuthenticationFilter;
+
+	@Autowired
+	private TokenService tokenService;
+	
+	public UserSecurity login(LoginDTO loginDTO) {
+		User user = userRepository.findByEmail(loginDTO.getEmail());
+		
+		UserSecurity userSecurity = jwtAuthenticationFilter.attemptAuthentication(user, loginDTO.getPassword());
+		tokenService.create(userSecurity, user);
+		
+		return userSecurity;
 	}
 	
-	public List<User> logout() {
-		User entity = new User();
-		entity.setEmail("vinicius_pugliesi@outlook.com");
-		entity.setPassword("123");
-		entity.setNome("Vinicius");
+	public void logout() {
+	}
+	
+	public UserSecurity loadUserByEmail(String email) {
+		User user = userRepository.findByEmail(email);
 		
-		userRepository.save(entity);
+		if (user == null) {
+			throw new UnauthorizedException("O usuário não existe no sistema.");
+		}
 		
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//
-//		entity.setPassword("1234");
-//		userRepository.save(entity);
-//		
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-		
-//		Pageable firstPageWithTwoElements = PageRequest.of(0, 3);
-//		Sort sort = Sort.by(Sort.Direction.DESC, "id");
-		
-//		userRepository.delete(entity);
-		
-//		Set<Integer> ids = new HashSet<Integer>();
-//		ids.add(2);
-//		ids.add(3);
-
-		return userRepository.findAll();
-//		return userRepository.findAll(firstPageWithTwoElements);
-//		return userRepository.findAll(sort);
-//		return userRepository.findAllById(ids);
+		return new UserSecurity(user);
 	}
 }

@@ -9,8 +9,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.springboot.angular.panel.security.exception.UnauthorizedException;
+import com.springboot.angular.panel.services.exceptions.AuthenticationCredentialsNotFoundException;
+
 @ControllerAdvice
-public class ResourceExceptionHandler {
+public class ControllerExceptionHandler {
 
 //	@ExceptionHandler(ObjectNotFountException.class)
 //	public ResponseEntity<StandardError> objectNotFound(ObjectNotFountException e, HttpServletRequest request) {
@@ -30,19 +33,46 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> dataIntegrity(MethodArgumentNotValidException e, HttpServletRequest request) {
 
 		Integer status = HttpStatus.UNPROCESSABLE_ENTITY.value();
-		String error = "Error de validação.";
+		String message = "Erro de validação.";
 		Long timestamp = System.currentTimeMillis();
 		String path = request.getRequestURI().toString();
-		
-		ValidationError validationError = new ValidationError(status, error, timestamp, path);
 
-		for (FieldError x : e.getBindingResult().getFieldErrors()) {
-			validationError.addError(x.getField(), x.getDefaultMessage());
+		ValidationError validationError = new ValidationError(status, message, timestamp, path);
+
+		for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+			validationError.addError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
 
-		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(validationError);
+		return ResponseEntity.status(status).body(validationError);
 	}
 
+	@ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+	public ResponseEntity<StandardError> authorization(AuthenticationCredentialsNotFoundException e,
+			HttpServletRequest request) {
+
+		Integer status = HttpStatus.UNPROCESSABLE_ENTITY.value();
+		String message = e.getMessage();
+		Long timestamp = System.currentTimeMillis();
+		String path = request.getRequestURI().toString();
+
+		ValidationError validationError = new ValidationError(status, message, timestamp, path);
+		validationError.addError("password", e.getMessage());
+		
+		return ResponseEntity.status(status).body(validationError);
+	}
+
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<StandardError> authorization(UnauthorizedException e, HttpServletRequest request) {
+
+		Integer status = HttpStatus.UNAUTHORIZED.value();
+		String message = e.getMessage();
+		Long timestamp = System.currentTimeMillis();
+		String path = request.getRequestURI().toString();
+
+		StandardError err = new StandardError(status, message, timestamp, path);
+		return ResponseEntity.status(status).body(err);
+	}
+	
 //	@ExceptionHandler(AuthorizationException.class)
 //	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
 //		

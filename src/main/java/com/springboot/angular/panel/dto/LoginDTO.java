@@ -11,8 +11,8 @@ public class LoginDTO implements Serializable {
 	private static final long serialVersionUID = 4865004936449715245L;
 
 	@NotEmpty(message = "O email é obrigatório.")
-	@Email(message = "O email é  inválido.")
-	@Exists(message = "O email não existe no sistema.", table = "users", collumn = "email")
+	@Email(message = "O email é inválido.")
+	@Exists(message = "O email não existe no sistema.", table = "users", collumn = "email", conditions = "deleted_at IS NULL")
 	private String email;
 
 	@NotEmpty(message = "A senha é obrigatória.")

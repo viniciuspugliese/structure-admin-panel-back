@@ -3,6 +3,7 @@ package com.springboot.angular.panel.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,46 +12,50 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @Entity
-@Table(name = "user_roles")
-public class UserRole implements Serializable {
+@Table(name = "profile_roles")
+@SQLDelete(sql = "UPDATE user_roles SET deleted_at = current_timestamp() WHERE id = ?")
+@Where(clause = "deleted_at IS NULL")
+public class ProfileRole implements Serializable {
 	private static final long serialVersionUID = -2978330803126414514L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "profile_id")
+	private Profile profile;
 
-	@CreatedDate
+	@CreationTimestamp
+	@Column(nullable = false)
 	private Date createdAt;
-	
-	@LastModifiedDate
+
+	@UpdateTimestamp
+	@Column(nullable = false)
 	private Date updatedAt;
-	
+
+	@Column(nullable = true)
 	private Date deletedAt;
 
-	public UserRole() {
+	public ProfileRole() {
 		
 	}
-	
-	public UserRole(Integer id, Role role, User user, Date createdAt, Date updatedAt, Date deletedAt) {
+
+	public ProfileRole(Integer id, Role role, Profile profile) {
 		super();
 		this.id = id;
 		this.role = role;
-		this.user = user;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.deletedAt = deletedAt;
+		this.profile = profile;
 	}
 
 	public Integer getId() {
@@ -60,7 +65,7 @@ public class UserRole implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public Role getRole() {
 		return role;
 	}
@@ -69,12 +74,12 @@ public class UserRole implements Serializable {
 		this.role = role;
 	}
 
-	public User getUser() {
-		return user;
+	public Profile getProfile() {
+		return profile;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
 	public Date getCreatedAt() {
@@ -100,7 +105,7 @@ public class UserRole implements Serializable {
 	public void setDeletedAt(Date deletedAt) {
 		this.deletedAt = deletedAt;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -117,18 +122,12 @@ public class UserRole implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserRole other = (UserRole) obj;
+		ProfileRole other = (ProfileRole) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "UserRole [id=" + id + ", role=" + role + ", user=" + user + ", createdAt=" + createdAt + ", updatedAt="
-				+ updatedAt + ", deletedAt=" + deletedAt + "]";
 	}
 }

@@ -1,7 +1,5 @@
 package com.springboot.angular.panel.controllers.auth;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.angular.panel.domain.User;
 import com.springboot.angular.panel.dto.LoginDTO;
+import com.springboot.angular.panel.security.UserSecurity;
 import com.springboot.angular.panel.services.auth.AuthService;
 
 @RestController
@@ -23,12 +21,13 @@ public class AuthController {
 	private AuthService authService;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public ResponseEntity<List<User>> login(@Valid @RequestBody LoginDTO loginDTO) {
+	public ResponseEntity<UserSecurity> login(@Valid @RequestBody LoginDTO loginDTO) {
 		return ResponseEntity.ok().body(authService.login(loginDTO));
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public ResponseEntity<List<User>> logout() {
-		return ResponseEntity.ok().body(authService.logout());
+	public ResponseEntity<Void> logout() {
+		authService.logout();
+		return ResponseEntity.noContent().build();
 	}
 }

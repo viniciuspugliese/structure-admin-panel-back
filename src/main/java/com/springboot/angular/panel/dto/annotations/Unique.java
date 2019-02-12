@@ -23,6 +23,8 @@ public @interface Unique {
 
     String collumn() default "";
 
+    String conditions() default "";
+    
 	Class<?>[] groups() default {};
 
 	Class<? extends Payload>[] payload() default{};

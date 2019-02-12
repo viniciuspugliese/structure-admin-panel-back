@@ -1,55 +1,56 @@
 package com.springboot.angular.panel.security;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
+import com.springboot.angular.panel.security.exception.UnauthorizedException;
+import com.springboot.angular.panel.services.TokenService;
+import com.springboot.angular.panel.services.auth.AuthService;
 
+@Component
+public class JWTAuthorizationFilter {
+
+    @Value("${security.jwt.header}")
+    private String header;
+
+    @Value("${security.jwt.prefix}")
+    private String prefix;
+
+    @Autowired
 	private JWTUtil jwtUtil;
-	
-	private UserDetailsService userDetailsService;
-	
-	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserDetailsService userDetailsService) {
-		super(authenticationManager);
-		this.jwtUtil = jwtUtil;
-		this.userDetailsService = userDetailsService;
-	}
-	
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
 
-		String header = request.getHeader("Authorization");
+    @Autowired
+	private AuthService authService;
+	
+    @Autowired
+    private TokenService tokenService;
+    
+	public void doFilter(HttpServletRequest request, HttpServletResponse response, Object handler) {
+		String header = request.getHeader(this.header);
 		
-		if (header != null && header.startsWith("Bearer ")) {
-			UsernamePasswordAuthenticationToken auth = getAuthentication(header.substring(7));
-			
-			if (auth != null) {
-				SecurityContextHolder.getContext().setAuthentication(auth);
-			}
+		if (header == null || ! header.startsWith(prefix + " ")) {
+			throw new UnauthorizedException("O Authorization Header é obrigatório.");
 		}
 		
-		chain.doFilter(request, response);
+		UserSecurity userSecurity = getAuthentication(header.substring(7));
+		SecurityContext.setUserSecurity(userSecurity);
 	}
 
-	private UsernamePasswordAuthenticationToken getAuthentication(String token) {
-		if (jwtUtil.tokenValid(token)) {
-			String email = jwtUtil.getEmail(token);
-			UserDetails user = userDetailsService.loadUserByUsername(email);
-			return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+	private UserSecurity getAuthentication(String token) {
+		if (! jwtUtil.tokenValid(token)) {
+			throw new UnauthorizedException("O Authorization Header é inválido.");
+		}
+
+		UserSecurity userSecurity = authService.loadUserByEmail(jwtUtil.getEmail(token));
+		
+		if (! tokenService.existsAuthorization(token, userSecurity.getId())) {
+			throw new UnauthorizedException("O Authorization Header é inválido.");
 		}
 		
-		return null;
+		return userSecurity;
 	}
 }

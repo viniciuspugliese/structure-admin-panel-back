@@ -1,53 +1,48 @@
 package com.springboot.angular.panel.security;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboot.angular.panel.dto.LoginDTO;
+import com.springboot.angular.panel.domain.User;
+import com.springboot.angular.panel.services.exceptions.AuthenticationCredentialsNotFoundException;
 
-public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+@Component
+public class JWTAuthenticationFilter {
 
-	private AuthenticationManager authenticationManager;
-	
+	@Autowired
 	private JWTUtil jwtUtil;
+
+	@Autowired
+	private HttpServletResponse response;
+
+	@Autowired
+	private BCryptPasswordEncoder bCrypt;
 	
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
-		this.authenticationManager = authenticationManager;
-		this.jwtUtil = jwtUtil;
+	public JWTAuthenticationFilter() {
+		
 	}
 	
-	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) 
-			throws AuthenticationException {
-		
-		try {
-			LoginDTO loginDTO = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword(), new ArrayList<>());
-			
-			return authenticationManager.authenticate(authToken);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
+	public UserSecurity attemptAuthentication(User user, String password) {
+		if (! bCrypt.matches(password, user.getPassword())) {
+			throw new AuthenticationCredentialsNotFoundException("A senha não coincide com o email informado.");
 		}
+		
+		UserSecurity userSecurity = new UserSecurity(user);
+		userSecurity.setToken(successfulAuthentication(userSecurity));
+		SecurityContext.setUserSecurity(userSecurity);
+		
+		return userSecurity;
 	}
 	
-	@Override
-	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
-			Authentication auth) throws IOException, ServletException {
-		
-		String email = ((UserSecurity) auth.getPrincipal()).getUsername();
+	public String successfulAuthentication(UserSecurity userSecurity) {
+		String email = userSecurity.getEmail();
 		String token = jwtUtil.generateToken(email);
+		
 		response.addHeader("Authorization", "Bearer " + token);
+		
+		return token;
 	}
 }

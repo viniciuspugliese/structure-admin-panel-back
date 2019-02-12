@@ -8,29 +8,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.annotations.Where;
+
+import com.springboot.angular.panel.domain.enuns.TokenType;
 
 @Entity
-@Table(name = "roles")
-@SQLDelete(sql = "UPDATE roles SET deleted_at = current_timestamp() WHERE id = ?")
-@Where(clause = "deleted_at IS NULL")
-public class Role implements Serializable {
-	private static final long serialVersionUID = 5247689982349674117L;
+@Table(name = "tokens")
+public class Token implements Serializable {
+	private static final long serialVersionUID = 664707693551392448L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(nullable = false)
-	private String name;
+	private Integer type;
 
 	@Column(nullable = false)
-	private String description;
+	private String token;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 
 	@CreationTimestamp
 	@Column(nullable = false)
@@ -40,18 +44,22 @@ public class Role implements Serializable {
 	@Column(nullable = false)
 	private Date updatedAt;
 
-	@Column(nullable = true)
-	private Date deletedAt;
-
-	public Role() {
+	public Token() {
 		
 	}
-
-	public Role(Integer id, String name, String description) {
+	
+	public Token(Integer id, TokenType tokenType, String token, User user) {
 		super();
 		this.id = id;
-		this.name = name;
-		this.description = description;
+		this.type = tokenType.value();
+		this.token = token;
+		this.user = user;
+	}
+
+	public Token(String token, TokenType tokenType, User user) {
+		this.type = tokenType.value();
+		this.token = token;
+		this.user = user;
 	}
 
 	public Integer getId() {
@@ -62,20 +70,28 @@ public class Role implements Serializable {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public TokenType getType() {
+		return TokenType.toEnum(type);
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setType(TokenType tokenType) {
+		this.type = tokenType.value();
 	}
 
-	public String getDescription() {
-		return description;
+	public String getToken() {
+		return token;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Date getCreatedAt() {
@@ -94,14 +110,6 @@ public class Role implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public Date getDeletedAt() {
-		return deletedAt;
-	}
-
-	public void setDeletedAt(Date deletedAt) {
-		this.deletedAt = deletedAt;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -118,7 +126,7 @@ public class Role implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Role other = (Role) obj;
+		Token other = (Token) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
