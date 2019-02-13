@@ -11,10 +11,10 @@
 	</parent>
 	
 	<groupId>com.example</groupId>
-	<artifactId>spring-boot-angular-panel</artifactId>
+	<artifactId>admin-panel.api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	
-	<name>spring-boot-angular-panel</name>
+	<name>admin-panel.api</name>
 	<description>Panel with spring boot and angular</description>
 
 	<properties>

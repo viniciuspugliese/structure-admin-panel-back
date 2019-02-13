@@ -7,7 +7,6 @@ import com.admin.panel.api.domain.User;
 import com.admin.panel.api.dto.LoginDTO;
 import com.admin.panel.api.repositories.UserRepository;
 import com.admin.panel.api.security.JWTAuthenticationFilter;
-import com.admin.panel.api.security.JWTUtil;
 import com.admin.panel.api.security.UserSecurity;
 import com.admin.panel.api.security.exception.UnauthorizedException;
 import com.admin.panel.api.services.TokenService;

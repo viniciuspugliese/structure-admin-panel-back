@@ -1,4 +1,4 @@
-package com.springboot.angular.panel;
+package com.admin.panel.api;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class SpringBootAngularPanelApplicationTests {
+public class AdminPanelApiTests {
 
 	@Test
 	public void contextLoads() {
