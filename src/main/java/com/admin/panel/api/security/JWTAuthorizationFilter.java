@@ -28,7 +28,7 @@ public class JWTAuthorizationFilter {
 	
     @Autowired
     private TokenService tokenService;
-    
+
 	public void doFilter(HttpServletRequest request, HttpServletResponse response, Object handler) {
 		String header = request.getHeader(this.header);
 		
@@ -46,8 +46,9 @@ public class JWTAuthorizationFilter {
 		}
 
 		UserSecurity userSecurity = authService.loadUserByEmail(jwtUtil.getEmail(token));
+		userSecurity.setToken(token);
 		
-		if (! tokenService.existsAuthorization(token, userSecurity.getId())) {
+		if (! tokenService.existsAuthentication(userSecurity)) {
 			throw new UnauthorizedException("O Authorization Header é inválido.");
 		}
 		

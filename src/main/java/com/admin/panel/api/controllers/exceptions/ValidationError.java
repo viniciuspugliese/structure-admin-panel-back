@@ -16,6 +16,10 @@ public class ValidationError extends StandardError {
 		super(status, error, timestamp, path);
 	}
 
+	public ValidationError(Integer status, String error, Long timestamp, String path, StackTraceElement[] cause) {
+		super(status, error, timestamp, path, cause);
+	}
+
 	public List<FieldMessage> getErrors() {
 		return errors;
 	}

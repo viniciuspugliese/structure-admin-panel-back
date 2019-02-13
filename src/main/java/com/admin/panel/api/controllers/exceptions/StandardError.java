@@ -2,6 +2,8 @@ package com.admin.panel.api.controllers.exceptions;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class StandardError implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
@@ -13,6 +15,9 @@ public class StandardError implements Serializable {
 	
 	private Long timestamp;
 	
+	@JsonIgnore
+	private StackTraceElement[] cause; 
+	
 	public StandardError() {
 		
 	}
@@ -23,6 +28,15 @@ public class StandardError implements Serializable {
 		this.message = message;
 		this.timestamp = timestamp;
 		this.path = path;
+	}
+
+	public StandardError(Integer status, String message, Long timestamp, String path, StackTraceElement[] cause) {
+		super();
+		this.status = status;
+		this.message = message;
+		this.timestamp = timestamp;
+		this.path = path;
+		this.cause = cause;
 	}
 
 	public Integer getStatus() {
@@ -55,5 +69,13 @@ public class StandardError implements Serializable {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	public StackTraceElement[] getCause() {
+		return cause;
+	}
+
+	public void setCause(StackTraceElement[] cause) {
+		this.cause = cause;
 	}
 }

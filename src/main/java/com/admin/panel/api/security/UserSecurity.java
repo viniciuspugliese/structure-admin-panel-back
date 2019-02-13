@@ -15,41 +15,38 @@ public class UserSecurity implements Serializable {
 	
 	private String email;
 	
-	private Date email_verified_at;
+	private Date emailVerifiedAt;
+
+	private Date passwordExpiresAt;
 	
 	@JsonIgnore
 	private String token;
-	
-	private Date created_at;
-	
-	private Date updated_at;
-	
-	private Date deleted_at;
-	
+
+	private Date createdAt;
+
+	private Date updatedAt;
+
 	public UserSecurity() {
 		
 	}
 	
-	public UserSecurity(Integer id, String nome, String email, Date email_verified_at, Date created_at, Date updated_at,
-			Date deleted_at) {
+	public UserSecurity(Integer id, String nome, String email, Date email_verified_at, Date passwordExpiresAt) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		this.email_verified_at = email_verified_at;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
-		this.deleted_at = deleted_at;
+		this.emailVerifiedAt = email_verified_at;
+		this.passwordExpiresAt = passwordExpiresAt;
 	}
 
 	public UserSecurity(User user) {
 		id = user.getId();
 		nome = user.getNome();
 		email = user.getEmail();
-		email_verified_at = user.getEmailVerifiedAt();
-		created_at = user.getCreatedAt();
-		updated_at = user.getUpdatedAt();
-		deleted_at = user.getDeletedAt();
+		emailVerifiedAt = user.getEmailVerifiedAt();
+		passwordExpiresAt = user.getPasswordExpiresAt();
+		createdAt = user.getCreatedAt();
+		updatedAt = user.getUpdatedAt();
 	}
 	
 	public Integer getId() {
@@ -76,36 +73,20 @@ public class UserSecurity implements Serializable {
 		this.email = email;
 	}
 
-	public Date getEmail_verified_at() {
-		return email_verified_at;
+	public Date getEmailVerifiedAt() {
+		return emailVerifiedAt;
 	}
 
-	public void setEmail_verified_at(Date email_verified_at) {
-		this.email_verified_at = email_verified_at;
+	public void setEmailVerifiedAt(Date emailVerifiedAt) {
+		this.emailVerifiedAt = emailVerifiedAt;
 	}
 
-	public Date getCreated_at() {
-		return created_at;
+	public Date getPasswordExpiresAt() {
+		return passwordExpiresAt;
 	}
 
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
-	}
-
-	public Date getUpdated_at() {
-		return updated_at;
-	}
-
-	public void setUpdated_at(Date updated_at) {
-		this.updated_at = updated_at;
-	}
-
-	public Date getDeleted_at() {
-		return deleted_at;
-	}
-
-	public void setDeleted_at(Date deleted_at) {
-		this.deleted_at = deleted_at;
+	public void setPasswordExpiresAt(Date passwordExpiresAt) {
+		this.passwordExpiresAt = passwordExpiresAt;
 	}
 
 	public String getToken() {
@@ -114,5 +95,21 @@ public class UserSecurity implements Serializable {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 }

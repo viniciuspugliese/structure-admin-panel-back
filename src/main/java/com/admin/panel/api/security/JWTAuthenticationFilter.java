@@ -21,10 +21,6 @@ public class JWTAuthenticationFilter {
 	@Autowired
 	private BCryptPasswordEncoder bCrypt;
 	
-	public JWTAuthenticationFilter() {
-		
-	}
-	
 	public UserSecurity attemptAuthentication(User user, String password) {
 		if (! bCrypt.matches(password, user.getPassword())) {
 			throw new AuthenticationCredentialsNotFoundException("A senha não coincide com o email informado.");

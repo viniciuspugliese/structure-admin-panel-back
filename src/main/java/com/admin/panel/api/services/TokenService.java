@@ -21,7 +21,12 @@ public class TokenService {
 		return tokenRepository.save(token);
 	}
 
-	public boolean existsAuthorization(String token, Integer user_id) {
-		return tokenRepository.countByTokenAndTypeAndUserId(token, TokenType.AUTHENTICATION.value(), user_id) > 0;
+	public boolean existsAuthentication(UserSecurity userSecurity) {
+		return tokenRepository.countByTokenAndTypeAndUserId(userSecurity.getToken(), TokenType.AUTHENTICATION.value(), userSecurity.getId()) > 0;
+	}
+
+	public void expiresAuthentication(UserSecurity userSecurity) {
+		Token token = tokenRepository.findByTokenAndTypeAndUserId(userSecurity.getToken(), TokenType.AUTHENTICATION.value(), userSecurity.getId());
+		tokenRepository.delete(token);
 	}
 }

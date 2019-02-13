@@ -2,6 +2,7 @@ package com.admin.panel.api.controllers.exceptions;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -9,26 +10,16 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.admin.panel.api.interceptors.HttpLogInterceptor;
 import com.admin.panel.api.security.exception.UnauthorizedException;
 import com.admin.panel.api.services.exceptions.AuthenticationCredentialsNotFoundException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
-
-//	@ExceptionHandler(ObjectNotFountException.class)
-//	public ResponseEntity<StandardError> objectNotFound(ObjectNotFountException e, HttpServletRequest request) {
-//		
-//		StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
-//		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
-//	}
-
-//	@ExceptionHandler(DataIntegrityException.class)
-//	public ResponseEntity<StandardError> dataIntegrity(DataIntegrityException e, HttpServletRequest request) {
-//		
-//		StandardError err = new StandardError(HttpStatus.BAD_REQUEST.value(), e.getMessage(), System.currentTimeMillis());
-//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
-//	}
-
+	
+	@Autowired
+	private HttpLogInterceptor httpLogInterceptor;
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<StandardError> dataIntegrity(MethodArgumentNotValidException e, HttpServletRequest request) {
 
@@ -36,12 +27,15 @@ public class ControllerExceptionHandler {
 		String message = "Erro de validação.";
 		Long timestamp = System.currentTimeMillis();
 		String path = request.getRequestURI().toString();
+		StackTraceElement[] cause = e.getStackTrace();
 
-		ValidationError validationError = new ValidationError(status, message, timestamp, path);
+		ValidationError validationError = new ValidationError(status, message, timestamp, path, cause);
 
 		for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
 			validationError.addError(fieldError.getField(), fieldError.getDefaultMessage());
 		}
+		
+		httpLogInterceptor.afterCompletion(validationError, request);
 
 		return ResponseEntity.status(status).body(validationError);
 	}
@@ -54,10 +48,13 @@ public class ControllerExceptionHandler {
 		String message = e.getMessage();
 		Long timestamp = System.currentTimeMillis();
 		String path = request.getRequestURI().toString();
+		StackTraceElement[] cause = e.getStackTrace();
 
-		ValidationError validationError = new ValidationError(status, message, timestamp, path);
+		ValidationError validationError = new ValidationError(status, message, timestamp, path, cause);
 		validationError.addError("password", e.getMessage());
 		
+		httpLogInterceptor.afterCompletion(validationError, request);
+
 		return ResponseEntity.status(status).body(validationError);
 	}
 
@@ -68,16 +65,11 @@ public class ControllerExceptionHandler {
 		String message = e.getMessage();
 		Long timestamp = System.currentTimeMillis();
 		String path = request.getRequestURI().toString();
+		StackTraceElement[] cause = e.getStackTrace();
 
-		StandardError err = new StandardError(status, message, timestamp, path);
-		return ResponseEntity.status(status).body(err);
+		StandardError standardError = new StandardError(status, message, timestamp, path, cause);
+		httpLogInterceptor.afterCompletion(standardError, request);
+
+		return ResponseEntity.status(status).body(standardError);
 	}
-	
-//	@ExceptionHandler(AuthorizationException.class)
-//	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
-//		
-//		StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
-//		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
-//	}
-
 }

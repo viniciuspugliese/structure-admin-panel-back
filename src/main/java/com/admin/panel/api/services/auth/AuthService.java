@@ -7,6 +7,7 @@ import com.admin.panel.api.domain.User;
 import com.admin.panel.api.dto.LoginDTO;
 import com.admin.panel.api.repositories.UserRepository;
 import com.admin.panel.api.security.JWTAuthenticationFilter;
+import com.admin.panel.api.security.SecurityContext;
 import com.admin.panel.api.security.UserSecurity;
 import com.admin.panel.api.security.exception.UnauthorizedException;
 import com.admin.panel.api.services.TokenService;
@@ -33,6 +34,8 @@ public class AuthService {
 	}
 	
 	public void logout() {
+		UserSecurity userSecurity = SecurityContext.getUserSecurity();
+		tokenService.expiresAuthentication(userSecurity);
 	}
 	
 	public UserSecurity loadUserByEmail(String email) {

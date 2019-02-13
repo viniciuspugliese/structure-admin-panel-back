@@ -9,4 +9,6 @@ import com.admin.panel.api.domain.Token;
 public interface TokenRepository extends JpaRepository<Token, Integer> {
 
 	public Integer countByTokenAndTypeAndUserId(String token, Integer type, Integer user_id);
+
+	public Token findByTokenAndTypeAndUserId(String token, Integer type, Integer user_id);
 }

@@ -17,21 +17,31 @@ public class SecurityConfig implements WebMvcConfigurer {
 
 	private static final String[] PUBLIC_MATCHERS = { 
 		"/h2-console/**",
-		"/auth/login", 
-		"/auth/forgot-password",
-		"/auth/reset-password", 
-		"/auth/register",
 	};
 
 	private static final String[] AUTHENTICATED_MATCHERS = {
 		
 	};
 
+	private static final String[] NOT_AUTHENTICATED_MATCHERS = {
+		"/auth/login", 
+		"/auth/forgot-password",
+		"/auth/reset-password", 
+		"/auth/register",
+	};
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(authenticatedInterceptor)
-				.excludePathPatterns(PUBLIC_MATCHERS)
-				.addPathPatterns(AUTHENTICATED_MATCHERS);
+		if (NOT_AUTHENTICATED_MATCHERS.length > 0) {
+			registry.addInterceptor(authenticatedInterceptor)
+					.excludePathPatterns(PUBLIC_MATCHERS)
+					.excludePathPatterns(NOT_AUTHENTICATED_MATCHERS)
+					.addPathPatterns(AUTHENTICATED_MATCHERS);
+		} else {
+			registry.addInterceptor(authenticatedInterceptor)
+					.excludePathPatterns(PUBLIC_MATCHERS)
+					.addPathPatterns(AUTHENTICATED_MATCHERS);
+		}
 	}
 	
 	@Bean
