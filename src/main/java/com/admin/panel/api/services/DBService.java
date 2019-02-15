@@ -1,6 +1,7 @@
 package com.admin.panel.api.services;
 
-import java.sql.Date;
+import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,10 +18,31 @@ public class DBService {
 
 	@Autowired
 	private BCryptPasswordEncoder bCrypt;
-	
+
 	public void instantiateTestDatabase() {
-		User user = new User("Vinicius", "vinicius_pugliesi@outlook.com", bCrypt.encode("123"), new Date(System.currentTimeMillis()));
+		String password = bCrypt.encode("123");
+		Date passwordExpiresAt = Calendar.getInstance().getTime();
+
+		userRepository
+				.save(new User("Vinicius Pugliesi", "vinicius_pugliesi@outlook.com", password, passwordExpiresAt));
+
+		userRepository.save(new User("Thales Erick Márcio Figueiredo", "thaleserickmarciofigueiredo@outlook.com",
+				password, passwordExpiresAt));
+
+		userRepository.save(
+				new User("Gabriel Caio Freitas", "gabrielcaiofreitas-74@outlook.com", password, passwordExpiresAt));
+
+		userRepository.save(new User("Anderson Sebastião Ramos", "andersonsebastiaoramos-72@outlook.com", password,
+				passwordExpiresAt));
+
+		userRepository.save(new User("Miguel Fernando Marcos Vinicius Lima",
+				"mmiguelfernandomarcosviniciuslima@outlook.com", password, passwordExpiresAt));
+
+		userRepository.save(new User("Gabriel Marcos Vinicius Leandro Lopes",
+				"gabrielmarcosviniciusleandrolopes-97@outlook.com", password, passwordExpiresAt));
+
+		userRepository
+				.save(new User("Cauê Calebe Duarte", "cauecalebeduarte-81@outlook.com", password, passwordExpiresAt));
 		
-		userRepository.save(user);
 	}
 }

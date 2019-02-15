@@ -1,7 +1,6 @@
 package com.admin.panel.api.services.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.admin.panel.api.domain.User;
