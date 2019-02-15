@@ -1,20 +1,31 @@
 package com.admin.panel.api.controllers.auth;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.admin.panel.api.dto.ForgotPasswordDTO;
+import com.admin.panel.api.services.auth.PasswordService;
 
 @RestController
 @RequestMapping(value = "/auth")
 public class PasswordController {
 
-	@RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
-	public ResponseEntity<String> forgotPassword() {
-		return ResponseEntity.ok().body("Forgot password");
+	@Autowired
+	private PasswordService passwordService;
+	
+	@RequestMapping(value = "/forgot-password", method = RequestMethod.POST)
+	public ResponseEntity<Void> forgotPassword(@Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO) {
+		passwordService.forgotPassword(forgotPasswordDTO);
+		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "/reset-password", method = RequestMethod.GET)
+	@RequestMapping(value = "/reset-password", method = RequestMethod.POST)
 	public ResponseEntity<String> resetPassword() {
 		return ResponseEntity.ok().body("Reset password");
 	}

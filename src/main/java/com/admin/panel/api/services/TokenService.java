@@ -7,6 +7,7 @@ import com.admin.panel.api.domain.Token;
 import com.admin.panel.api.domain.User;
 import com.admin.panel.api.domain.enuns.TokenType;
 import com.admin.panel.api.repositories.TokenRepository;
+import com.admin.panel.api.security.JWTUtil;
 import com.admin.panel.api.security.UserSecurity;
 
 @Service
@@ -14,10 +15,17 @@ public class TokenService {
 
 	@Autowired
 	private TokenRepository tokenRepository;
+
+	@Autowired
+	private JWTUtil jwtUtil;
 	
-	public Token create(UserSecurity userSecurity, User user) {
+	public Token createByMail(User user) {
+		Token token = new Token(jwtUtil.generateToken(user.getEmail()), TokenType.EMAIL, user);
+		return tokenRepository.save(token);
+	}
+	
+	public Token createByAuthentication(UserSecurity userSecurity, User user) {
 		Token token = new Token(userSecurity.getToken(), TokenType.AUTHENTICATION, user);
-		
 		return tokenRepository.save(token);
 	}
 

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.admin.panel.api.interceptors.HttpLogInterceptor;
 import com.admin.panel.api.security.exception.UnauthorizedException;
 import com.admin.panel.api.services.exceptions.AuthenticationCredentialsNotFoundException;
+import com.admin.panel.api.services.exceptions.MailException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -62,6 +63,21 @@ public class ControllerExceptionHandler {
 	public ResponseEntity<StandardError> authorization(UnauthorizedException e, HttpServletRequest request) {
 
 		Integer status = HttpStatus.UNAUTHORIZED.value();
+		String message = e.getMessage();
+		Long timestamp = System.currentTimeMillis();
+		String path = request.getRequestURI().toString();
+		StackTraceElement[] cause = e.getStackTrace();
+
+		StandardError standardError = new StandardError(status, message, timestamp, path, cause);
+		httpLogInterceptor.afterCompletion(standardError, request);
+
+		return ResponseEntity.status(status).body(standardError);
+	}
+	
+	@ExceptionHandler(MailException.class)
+	public ResponseEntity<StandardError> authorization(MailException e, HttpServletRequest request) {
+
+		Integer status = HttpStatus.INTERNAL_SERVER_ERROR.value();
 		String message = e.getMessage();
 		Long timestamp = System.currentTimeMillis();
 		String path = request.getRequestURI().toString();

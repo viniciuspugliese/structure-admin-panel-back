@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.admin.panel.api.controllers.exceptions.StandardError;
@@ -21,7 +22,8 @@ public class HttpLogService {
 
 	@Autowired
 	private UserService userService;
-	
+
+	@Async
 	public HttpLog create(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception exception) {
 		
@@ -37,6 +39,7 @@ public class HttpLogService {
 		return logRepository.save(httpLog);
 	}
 
+	@Async
 	public HttpLog create(HttpServletRequest request, StandardError exception) {
 
 		HttpLog httpLog = new HttpLog();

@@ -4,7 +4,7 @@ public enum TokenType {
 
 	AUTHENTICATION(1, "Autenticação"),
 	
-	MAIL(2, "Email");
+	EMAIL(2, "Email");
 
 	private final int value;
 
