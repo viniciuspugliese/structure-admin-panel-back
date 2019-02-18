@@ -13,7 +13,7 @@ import com.admin.panel.api.dto.annotations.validations.ExistsValidator;
 
 @Documented
 @Constraint(validatedBy = ExistsValidator.class)
-@Target( { ElementType.METHOD, ElementType.FIELD })
+@Target( { ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Exists {
 	

@@ -27,7 +27,7 @@ public class User implements Serializable {
 	private Integer id;
 
 	@Column(nullable = false)
-	private String nome;
+	private String name;
 
 	@Column(nullable = false, unique = true)
 	private String email;
@@ -53,22 +53,22 @@ public class User implements Serializable {
 	private Date deletedAt;
 
 	public User() {
-		
+
 	}
 
-	public User(Integer id, String nome, String email, String password, Date emailVerifiedAt, Date passwordExpiresAt) {
+	public User(Integer id, String name, String email, String password, Date emailVerifiedAt, Date passwordExpiresAt) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.emailVerifiedAt = emailVerifiedAt;
 		this.passwordExpiresAt = passwordExpiresAt;
 	}
 
-	public User(String nome, String email, String password, Date passwordExpiresAt) {
+	public User(String name, String email, String password, Date passwordExpiresAt) {
 		super();
-		this.nome = nome;
+		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.passwordExpiresAt = passwordExpiresAt;
@@ -81,13 +81,13 @@ public class User implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public String getNome() {
-		return nome;
+	
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {

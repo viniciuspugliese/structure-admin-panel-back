@@ -11,7 +11,7 @@ import com.admin.panel.api.dto.annotations.Exists;
 import com.admin.panel.api.dto.annotations.validations.utils.NativeQueryUtil;
 
 public class ExistsValidator implements ConstraintValidator<Exists, String> {
-
+	
 	@Autowired
 	private NativeQueryUtil nativeQueryUtil;
 	
@@ -29,8 +29,8 @@ public class ExistsValidator implements ConstraintValidator<Exists, String> {
 	}
 
 	@Override
-	public boolean isValid(String field, ConstraintValidatorContext cxt) {
-		List<?> list = nativeQueryUtil.queryBuilder(table, collumn, field, conditions);
+	public boolean isValid(String value, ConstraintValidatorContext context) {
+		List<?> list = nativeQueryUtil.queryBuilder(table, collumn, value, conditions);
 		
 		return ! list.isEmpty();
 	}

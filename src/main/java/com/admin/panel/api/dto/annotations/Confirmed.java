@@ -9,23 +9,17 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.admin.panel.api.dto.annotations.validations.UniqueValidator;
+import com.admin.panel.api.dto.annotations.validations.ConfirmedValidator;
 
 @Documented
-@Constraint(validatedBy = UniqueValidator.class)
+@Constraint(validatedBy = ConfirmedValidator.class)
 @Target( { ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Unique {
+public @interface Confirmed {
 	
-    String message() default "";
-
-    String table() default "";
-
-    String collumn() default "";
-
-    String conditions() default "";
+    public String message() default "";
     
-	Class<?>[] groups() default {};
+    public Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default{};
+    public Class<? extends Payload>[] payload() default{};
 }

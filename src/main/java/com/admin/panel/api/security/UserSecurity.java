@@ -11,7 +11,7 @@ public class UserSecurity implements Serializable {
 
 	private Integer id;
 	
-	private String nome;
+	private String name;
 	
 	private String email;
 	
@@ -30,10 +30,10 @@ public class UserSecurity implements Serializable {
 		
 	}
 	
-	public UserSecurity(Integer id, String nome, String email, Date email_verified_at, Date passwordExpiresAt) {
+	public UserSecurity(Integer id, String name, String email, Date email_verified_at, Date passwordExpiresAt) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.name = name;
 		this.email = email;
 		this.emailVerifiedAt = email_verified_at;
 		this.passwordExpiresAt = passwordExpiresAt;
@@ -41,7 +41,7 @@ public class UserSecurity implements Serializable {
 
 	public UserSecurity(User user) {
 		id = user.getId();
-		nome = user.getNome();
+		name = user.getName();
 		email = user.getEmail();
 		emailVerifiedAt = user.getEmailVerifiedAt();
 		passwordExpiresAt = user.getPasswordExpiresAt();
@@ -56,13 +56,13 @@ public class UserSecurity implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	public String getNome() {
-		return nome;
+	
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {

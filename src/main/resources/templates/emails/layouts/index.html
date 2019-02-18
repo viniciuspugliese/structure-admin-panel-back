@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="initial-scale=1.0">
+	<meta name="format-detection" content="telephone=no">
+	
+	<title>Email</title>
+	
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+	
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
+		
+		p {
+			font-family: 'Source Sans Pro', sans-serif;
+		}
+	</style>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		
+		table.vb-row, table.vb-content {
+			border-collapse: separate;
+		}
+		
+		table.vb-row {
+			border-spacing: 9px;
+		}
+		
+		table.vb-row.halfpad {
+			border-spacing: 0;
+			padding-left: 9px;
+			padding-right: 9px;
+		}
+		
+		table.vb-row.fullwidth {
+			border-spacing: 0;
+			padding: 0;
+		}
+
+		html, body {
+			height: 100%;
+		}
+		/* yahoo, hotmail */
+		.ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font,
+			.ExternalClass td, .ExternalClass div {
+			line-height: 100%;
+		}
+		
+		.yshortcuts a {
+			border-bottom: none !important;
+		}
+		
+		.vb-outer {
+			min-width: 0 !important;
+		}
+		
+		.RMsgBdy, .ExternalClass {
+			width: 100%;
+			background-color: #bfbfbf;
+			background-color: #bfbfbf;
+		}
+		/* outlook */
+		table {
+			mso-table-rspace: 0pt;
+			mso-table-lspace: 0pt;
+		}
+		
+		#outlook p {
+			font-family: 'Arial', sans-serif;
+		}
+		
+		#outlook a {
+			padding: 0;
+		}
+		
+		img {
+			outline: none;
+			text-decoration: none;
+			border: none;
+			-ms-interpolation-mode: bicubic;
+		}
+		
+		a img {
+			border: none;
+		}
+		
+		@media screen and (max-device-width: 600px) , screen and (max-width:
+			600px) {
+			table.vb-container, table.vb-row {
+				width: 95% !important;
+			}
+			.mobile-hide {
+				display: none !important;
+			}
+			.mobile-textcenter {
+				text-align: center !important;
+			}
+			.mobile-full {
+				float: none !important;
+				width: 100% !important;
+				max-width: none !important;
+				padding-right: 0 !important;
+				padding-left: 0 !important;
+			}
+			img.mobile-full {
+				width: 100% !important;
+				max-width: none !important;
+				height: auto !important;
+			}
+		}
+
+		#ko_textBlock_4 .links-color a, #ko_textBlock_4 .links-color a:link,
+			#ko_textBlock_4 .links-color a:visited, #ko_textBlock_4 .links-color a:hover
+			{
+			color: #3f3f3f;
+			color: #3f3f3f;
+			text-decoration: underline;
+		}
+		
+		#ko_textBlock_4 .long-text p:first-child {
+			margin-top: 0px;
+		}
+		
+		#ko_footerBlock_2 .links-color a:visited, #ko_footerBlock_2 .links-color a:hover
+			{
+			color: #ccc;
+			color: #ccc;
+			text-decoration: underline;
+		}
+		
+		#ko_imageBlock_3 a, #ko_imageBlock_3 a:link, #ko_imageBlock_3 a:visited,
+			#ko_imageBlock_3 a:hover {
+			color: #3f3f3f;
+			color: #3f3f3f;
+			text-decoration: underline;
+		}
+		
+		#ko_imageBlock_5 a, #ko_imageBlock_5 a:link, #ko_imageBlock_5 a:visited,
+			#ko_imageBlock_5 a:hover {
+			color: #3f3f3f;
+			color: #3f3f3f;
+			text-decoration: underline;
+		}
+	</style>
+</head>
+<body bgcolor="#bfbfbf" text="#919191" alink="#cccccc" vlink="#cccccc" style="margin: 0; padding: 0; background-color: #bfbfbf; color: #919191;">
+	<center>		
+		<table class="vb-outer" width="100%" cellpadding="0" border="0" cellspacing="0" bgcolor="#bfbfbf" style="background-color: #bfbfbf;" id="ko_imageBlock_3">
+			<tbody>
+				<tr>
+					<td class="vb-outer" valign="top" align="center" style="padding-left: 9px; padding-right: 9px;">
+						<!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
+							<div class="oldwebkit" style="max-width: 602px;">
+								<table width="570" class="vb-container fullwidth" cellpadding="0" border="0" bgcolor="#ffffff" align="center" cellspacing="0" style="border-collapse: separate; padding-left: 0; padding-right: 0; width: 100%; max-width: 602px; background-color: #fff;">
+									<tbody>
+										<tr>
+											<td valign="top" align="center">
+												<img hspace="0" border="0" vspace="0" width="570" class="mobile-full" alt="" style="border: 0px; border-radius: 0px; display: block; max-width: 602px; width: 100%; height: auto; font-size: 13px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f;" src="{{ url('/images/email-mkt/Template_Responde-02_02.jpg') }}">
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						<!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table class="vb-outer" width="100%" cellpadding="0" border="0" cellspacing="0" bgcolor="#bfbfbf" style="background-color: #bfbfbf;" id="ko_textBlock_4">
+			<tbody>
+				<tr>
+					<td class="vb-outer" align="center" valign="top" bgcolor="#bfbfbf" style="padding-left: 9px; padding-right: 9px; background-color: #bfbfbf;">
+						<!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
+							<div class="oldwebkit" style="max-width: 602px;">
+								<table width="570" border="0" cellpadding="0" cellspacing="18" class="vb-container fullpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 18px; padding-left: 0; padding-right: 0; width: 100%; max-width: 602px; background-color: #fff;">	
+									<tbody>
+										<tr>
+											<td align="left" class="long-text links-color" style="text-align: left; font-size: 18px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f; padding: 35px 0;">
+												<h5 style="margin-bottom: 15px;" th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy hh:mm')}"></h5>
+	
+												<h1>Olá <span th:text="${user.name}"></span></h1> 
+												
+												<br data-mce-bogus="1">
+	
+												Solicitaram uma alteração de sua senha. Você pode fazê-la clicando no link a seguir. <br><br>
+	
+											    <a th:href="@{'http:localhost:4200/recuperar-senha'(token=${tokenByRecoverPassword.token})}" style="text-decoration: underline">Alterar minha senha</a> <br><br>
+											
+											    Se não foi você quem requisitou isso, não se preocupe e ignore este e-mail. <br><br>
+											
+											    Sua senha não será alterada até que você acesse o link acima e crie uma nova.
+	
+												<p style="margin: 1em 0px;">
+													<br data-mce-bogus="1">
+												</p>
+	
+												<p style="margin: 1em 0px; margin-bottom: 0px;">
+													Atenciosamente <br>
+												</p>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						<!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<table class="vb-outer" width="100%" cellpadding="0" border="0" cellspacing="0" bgcolor="#bfbfbf" style="background-color: #bfbfbf;" id="ko_imageBlock_5">
+			<tbody>
+				<tr>
+					<td class="vb-outer" valign="top" align="center" style="padding-left: 9px; padding-right: 9px;">
+						<!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
+							<div class="oldwebkit" style="max-width: 602px;">
+								<table width="570" class="vb-container fullwidth" cellpadding="0" border="0" bgcolor="#ffffff" align="center" cellspacing="0" style="border-collapse: separate; padding-left: 0; padding-right: 0; width: 100%; max-width: 602px; background-color: #fff;">									
+									<tbody>
+										<tr>
+											<td valign="top" align="center" style="padding: 15px 0; font-size: 13px; color: #fff; background-color: #26142b;">
+												<p>Copyright ©<span th:text="${#dates.format(#dates.createNow(), 'yyyy')}"></span> - Todos os direitos reservados.</p>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						<!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</center>
+</body>
+</html>

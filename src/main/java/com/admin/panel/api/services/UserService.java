@@ -11,6 +11,10 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 	
 	public User findById(Integer id) {
 		return userRepository.findById(id).orElseGet(() -> null);

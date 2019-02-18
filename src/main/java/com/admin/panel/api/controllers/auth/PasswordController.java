@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.admin.panel.api.dto.ForgotPasswordDTO;
+import com.admin.panel.api.dto.ResetPasswordDTO;
 import com.admin.panel.api.services.auth.PasswordService;
 
 @RestController
@@ -26,7 +27,8 @@ public class PasswordController {
 	}
 
 	@RequestMapping(value = "/reset-password", method = RequestMethod.POST)
-	public ResponseEntity<String> resetPassword() {
-		return ResponseEntity.ok().body("Reset password");
+	public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) {
+		passwordService.resetPassword(resetPasswordDTO);
+		return ResponseEntity.noContent().build();
 	}
 }

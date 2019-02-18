@@ -17,7 +17,7 @@ public class ForgotPasswordDTO implements Serializable {
 
 	public ForgotPasswordDTO() {
 	}
-
+	
 	public ForgotPasswordDTO(String email) {
 		super();
 		this.email = email;

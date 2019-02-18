@@ -15,7 +15,7 @@ public class HttpLogInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private HttpLogService httpLogService;
-
+	
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception exception) throws Exception {

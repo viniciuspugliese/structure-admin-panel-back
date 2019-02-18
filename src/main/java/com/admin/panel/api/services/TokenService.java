@@ -19,8 +19,8 @@ public class TokenService {
 	@Autowired
 	private JWTUtil jwtUtil;
 	
-	public Token createByMail(User user) {
-		Token token = new Token(jwtUtil.generateToken(user.getEmail()), TokenType.EMAIL, user);
+	public Token createByRecoverPassword(User user) {
+		Token token = new Token(jwtUtil.generateToken(user.getEmail()), TokenType.RECOVER_PASSWORD, user);
 		return tokenRepository.save(token);
 	}
 	
@@ -36,5 +36,9 @@ public class TokenService {
 	public void expiresAuthentication(UserSecurity userSecurity) {
 		Token token = tokenRepository.findByTokenAndTypeAndUserId(userSecurity.getToken(), TokenType.AUTHENTICATION.value(), userSecurity.getId());
 		tokenRepository.delete(token);
+	}
+
+	public void expires(String token) {
+		tokenRepository.delete(tokenRepository.findByToken(token));
 	}
 }

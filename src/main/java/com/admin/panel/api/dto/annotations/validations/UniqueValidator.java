@@ -29,8 +29,8 @@ public class UniqueValidator implements ConstraintValidator<Unique, String> {
 	}
 
 	@Override
-	public boolean isValid(String field, ConstraintValidatorContext cxt) {
-		List<?> list = nativeQueryUtil.queryBuilder(table, collumn, field, conditions);
+	public boolean isValid(String value, ConstraintValidatorContext context) {
+		List<?> list = nativeQueryUtil.queryBuilder(table, collumn, value, conditions);
 		
 		return list.isEmpty();
 	}
