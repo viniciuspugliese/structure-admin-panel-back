@@ -88,4 +88,21 @@ public class ControllerExceptionHandler {
 
 		return ResponseEntity.status(status).body(standardError);
 	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<StandardError> authorization(Exception e, HttpServletRequest request) {
+
+		e.printStackTrace();
+		
+		Integer status = HttpStatus.INTERNAL_SERVER_ERROR.value();
+		String message = e.getMessage();
+		Long timestamp = System.currentTimeMillis();
+		String path = request.getRequestURI().toString();
+		StackTraceElement[] cause = e.getStackTrace();
+
+		StandardError standardError = new StandardError(status, message, timestamp, path, cause);
+		httpLogInterceptor.afterCompletion(standardError, request);
+
+		return ResponseEntity.status(status).body(standardError);
+	}
 }

@@ -27,7 +27,7 @@ public class PasswordController {
 	}
 
 	@RequestMapping(value = "/reset-password", method = RequestMethod.POST)
-	public ResponseEntity<String> resetPassword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) {
+	public ResponseEntity<Void> resetPassword(@Valid @RequestBody ResetPasswordDTO resetPasswordDTO) {
 		passwordService.resetPassword(resetPasswordDTO);
 		return ResponseEntity.noContent().build();
 	}

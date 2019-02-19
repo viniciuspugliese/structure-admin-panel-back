@@ -7,6 +7,9 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Component;
 
+import com.admin.panel.api.dto.ResetPasswordDTO;
+import com.admin.panel.api.services.util.InputReaderUtil;
+
 @Component
 public class NativeQueryUtil {
 
@@ -33,7 +36,19 @@ public class NativeQueryUtil {
 			sql += " AND " + conditions;
 			return;
 		}
+		
 
+//		ResetPasswordDTO resetPasswordDTO = (ResetPasswordDTO) InputReaderUtil.getInput();
+//		
+//		System.out.println(resetPasswordDTO);
+		
+//		try {
+//			ResetPasswordDTO resetPasswordDTO = new ObjectMapper().readValue(request.getReader(), ResetPasswordDTO.class);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		
+		
 //        Pattern pattern = Pattern.compile("\\$\\{[a-zA-Z]*\\}");
 //        Matcher matcher = pattern.matcher(conditions);
 //
