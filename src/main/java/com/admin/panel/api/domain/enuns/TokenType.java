@@ -4,7 +4,9 @@ public enum TokenType {
 
 	AUTHENTICATION(1, "Autenticação"),
 	
-	RECOVER_PASSWORD(2, "Recuperar senha");
+	RECOVER_PASSWORD(2, "Recuperar senha"),
+	
+	Registration(3, "Cadastro");
 
 	private final int value;
 

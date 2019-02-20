@@ -15,6 +15,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.admin.panel.api.dto.UserCreateDTO;
+
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted_at = current_timestamp() WHERE id = ?")
@@ -72,6 +74,14 @@ public class User implements Serializable {
 		this.email = email;
 		this.password = password;
 		this.passwordExpiresAt = passwordExpiresAt;
+	}
+
+	public User(UserCreateDTO userDTO) {
+		super();
+		this.name = userDTO.getName();
+		this.email = userDTO.getEmail();
+		this.password = userDTO.getPassword();
+		this.passwordExpiresAt = userDTO.getPasswordExpiresAt();
 	}
 
 	public Integer getId() {

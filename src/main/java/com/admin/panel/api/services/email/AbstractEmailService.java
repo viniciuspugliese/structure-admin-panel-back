@@ -14,7 +14,7 @@ import com.admin.panel.api.mails.Mail;
 
 public abstract class AbstractEmailService implements EmailService {
 
-	@Value("${mail.sender}")
+	@Value("${default.mail.sender}")
 	private String sender;
 	
 	@Autowired

@@ -23,6 +23,11 @@ public class TokenService {
 		Token token = new Token(jwtUtil.generateToken(user.getEmail()), TokenType.RECOVER_PASSWORD, user);
 		return tokenRepository.save(token);
 	}
+
+	public Token createByRegistration(User user) {
+		Token token = new Token(jwtUtil.generateToken(user.getEmail()), TokenType.Registration, user);
+		return tokenRepository.save(token);
+	}
 	
 	public Token createByAuthentication(UserSecurity userSecurity, User user) {
 		Token token = new Token(userSecurity.getToken(), TokenType.AUTHENTICATION, user);
