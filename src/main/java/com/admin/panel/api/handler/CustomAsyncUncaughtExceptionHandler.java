@@ -10,5 +10,6 @@ public class CustomAsyncUncaughtExceptionHandler implements AsyncUncaughtExcepti
     public void handleUncaughtException(Throwable ex, Method method, Object... params) {
         System.out.println("Method Name:: " + method.getName());
         System.out.println("Exception occurred:: " + ex);
+        ex.printStackTrace();
     }
 }

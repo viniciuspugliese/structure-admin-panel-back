@@ -23,7 +23,6 @@ public class HttpLogService {
 	@Autowired
 	private UserService userService;
 
-	@Async
 	public HttpLog create(HttpServletRequest request, HttpServletResponse response, Object handler,
 			Exception exception) {
 		
@@ -57,12 +56,15 @@ public class HttpLogService {
 	
 	private void handlerUser(HttpLog httpLog) {
 		UserSecurity userSecurity = SecurityContext.getUserSecurity();
-		
 		if (userSecurity == null) {
 			return;
 		}
 
 		User user = userService.findById(userSecurity.getId());
+		if (user == null) {
+			return;
+		}
+		
 		httpLog.setUser(user);
 	}
 

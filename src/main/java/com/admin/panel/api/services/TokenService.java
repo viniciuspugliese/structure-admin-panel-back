@@ -25,7 +25,7 @@ public class TokenService {
 	}
 
 	public Token createByRegistration(User user) {
-		Token token = new Token(jwtUtil.generateToken(user.getEmail()), TokenType.Registration, user);
+		Token token = new Token(jwtUtil.generateToken(user.getEmail()), TokenType.REGISTRATION, user);
 		return tokenRepository.save(token);
 	}
 	
@@ -36,6 +36,10 @@ public class TokenService {
 
 	public boolean existsAuthentication(UserSecurity userSecurity) {
 		return tokenRepository.countByTokenAndTypeAndUserId(userSecurity.getToken(), TokenType.AUTHENTICATION.value(), userSecurity.getId()) > 0;
+	}
+
+	public Token existsVerification(String token) {
+		return tokenRepository.findByTokenAndType(token, TokenType.REGISTRATION.value());
 	}
 
 	public void expiresAuthentication(UserSecurity userSecurity) {

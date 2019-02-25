@@ -1,15 +1,10 @@
 package com.admin.panel.api.interceptors;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class InputReaderInterceptor implements HandlerInterceptor {
@@ -18,9 +13,9 @@ public class InputReaderInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-		ServletInputStream servletInputStream = request.getInputStream();
-		
-		ObjectMapper objectMapper = new ObjectMapper();
+//		ServletInputStream servletInputStream = request.getInputStream();
+//		
+//		ObjectMapper objectMapper = new ObjectMapper();
 		
 //		JsonParser p0 = objectMapper.getFactory().createParser(servletInputStream);
 //		JavaType valueType = objectMapper.getTypeFactory().constructType(Object.class);

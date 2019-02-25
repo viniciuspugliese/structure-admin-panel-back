@@ -38,4 +38,10 @@ public class AuthController {
 		response.addHeader("Authorization", "Bearer " + token);
 		return ResponseEntity.noContent().build();
 	}
+
+	@RequestMapping(value = "/delete-account", method = RequestMethod.POST)
+	public ResponseEntity<Void> deleteAccount() {
+		authService.deleteAccount();
+		return ResponseEntity.noContent().build();
+	}
 }

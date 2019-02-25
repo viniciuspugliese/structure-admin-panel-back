@@ -10,10 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.admin.panel.api.domain.Token;
 import com.admin.panel.api.domain.User;
+import com.admin.panel.api.dto.RegisterDTO;
 import com.admin.panel.api.dto.UserCreateDTO;
 import com.admin.panel.api.dto.UserUpdateDTO;
 import com.admin.panel.api.mails.RegistrationMail;
@@ -65,7 +65,6 @@ public class UserService {
 		return userRepository.findAll(pageable);
 	}
 
-	@Transactional
 	public User create(UserCreateDTO userCreateDTO) {
 		User user = new User(userCreateDTO);
 		
@@ -76,6 +75,20 @@ public class UserService {
 		}
 		
 		userRepository.save(user);
+		return sendMailRegistration(user);
+	}
+
+	public User create(RegisterDTO registerDTO) {
+		User user = new User(registerDTO);
+		
+		user.setPassword(bCrypt.encode(registerDTO.getPassword()));
+		user.setPasswordExpiresAt(DateTimeUtil.getDateWithAddDays(passwordExpiresAtDays));
+		
+		userRepository.save(user);
+		return sendMailRegistration(user);
+	}
+	
+	private User sendMailRegistration(User user) {
 		Token token = tokenService.createByRegistration(user);
 
 		try {

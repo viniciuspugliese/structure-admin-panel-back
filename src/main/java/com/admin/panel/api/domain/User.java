@@ -15,6 +15,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.admin.panel.api.dto.RegisterDTO;
 import com.admin.panel.api.dto.UserCreateDTO;
 
 @Entity
@@ -82,6 +83,13 @@ public class User implements Serializable {
 		this.email = userDTO.getEmail();
 		this.password = userDTO.getPassword();
 		this.passwordExpiresAt = userDTO.getPasswordExpiresAt();
+	}
+
+	public User(RegisterDTO registerDTO) {
+		super();
+		this.name = registerDTO.getName();
+		this.email = registerDTO.getEmail();
+		this.password = registerDTO.getPassword();
 	}
 
 	public Integer getId() {

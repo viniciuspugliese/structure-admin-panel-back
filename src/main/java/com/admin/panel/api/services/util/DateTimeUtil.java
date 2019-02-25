@@ -16,4 +16,8 @@ public class DateTimeUtil {
 		calendar.add(Calendar.DAY_OF_MONTH, days);
 		return calendar.getTime();
 	}
+
+	public static Date getDate() {
+		return Calendar.getInstance().getTime();
+	}
 }

@@ -3,6 +3,7 @@ package com.admin.panel.api.services.auth;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,9 @@ import com.admin.panel.api.services.util.DateTimeUtil;
 @Service
 public class PasswordService {
 
+    @Value("${default.user.passwordExpiresAtDays}")
+	private Integer passwordExpiresAtDays;
+	
 	@Autowired
 	private EmailService emailService;
 
@@ -47,17 +51,17 @@ public class PasswordService {
 	}
 
 	public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
-//		User user = userRepository.findByEmail(resetPasswordDTO.getEmail());
-//
-//		user.setPassword(bCrypt.encode(resetPasswordDTO.getPassword()));
-//		user.setPasswordExpiresAt(DateTimeUtil.getDateWithAddMonth(3));
-//		userRepository.save(user);
-//		
-//		try {
-//			emailService.send(new ResetPasswordMail(user));
-//			tokenService.expires(resetPasswordDTO.getToken());
-//		} catch (MessagingException e) {
-//			throw new MailException(e);
-//		}
+		User user = userRepository.findByEmail(resetPasswordDTO.getEmail());
+
+		user.setPassword(bCrypt.encode(resetPasswordDTO.getPassword()));
+		user.setPasswordExpiresAt(DateTimeUtil.getDateWithAddDays(passwordExpiresAtDays));
+		userRepository.save(user);
+		
+		try {
+			emailService.send(new ResetPasswordMail(user));
+			tokenService.expires(resetPasswordDTO.getToken());
+		} catch (MessagingException e) {
+			throw new MailException(e);
+		}
 	}
 }

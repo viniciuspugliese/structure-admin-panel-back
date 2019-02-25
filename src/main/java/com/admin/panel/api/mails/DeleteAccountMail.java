@@ -6,17 +6,17 @@ import java.util.Map;
 
 import com.admin.panel.api.domain.User;
 
-public class ResetPasswordMail implements Mail {
+public class DeleteAccountMail implements Mail {
 
 	private User user;
 	
-	public ResetPasswordMail(User user) {
+	public DeleteAccountMail(User user) {
 		this.user = user;
 	}
 	
 	@Override
 	public String getTemplate() {
-		return "emails/reset-password";
+		return "emails/delete-account";
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class ResetPasswordMail implements Mail {
 
 	@Override
 	public String getSubject() {
-		return "Alteração de senha";
+		return "Exclusão da conta";
 	}
 
 	@Override
