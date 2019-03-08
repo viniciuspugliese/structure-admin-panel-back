@@ -1,5 +1,7 @@
 package com.admin.panel.api.services;
 
+import java.text.ParseException;
+
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import com.admin.panel.api.domain.Token;
 import com.admin.panel.api.domain.User;
 import com.admin.panel.api.dto.RegisterDTO;
 import com.admin.panel.api.dto.UserCreateDTO;
+import com.admin.panel.api.dto.UserSearchDTO;
 import com.admin.panel.api.dto.UserUpdateDTO;
 import com.admin.panel.api.mails.RegistrationMail;
 import com.admin.panel.api.repositories.UserRepository;
@@ -22,6 +25,7 @@ import com.admin.panel.api.security.SecurityContext;
 import com.admin.panel.api.security.UserSecurity;
 import com.admin.panel.api.services.email.EmailService;
 import com.admin.panel.api.services.exceptions.DataIntegrityException;
+import com.admin.panel.api.services.exceptions.InvalidParameterException;
 import com.admin.panel.api.services.exceptions.MailException;
 import com.admin.panel.api.services.exceptions.ObjectNotFountException;
 import com.admin.panel.api.services.util.DateTimeUtil;
@@ -55,14 +59,19 @@ public class UserService {
 		);
 	}
 
-	public Page<User> paginate(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		page = PaginationUtil.normalizePage(page);
-		linesPerPage = PaginationUtil.normalizeLinesPerPage(linesPerPage);
-		Direction directionType = PaginationUtil.normalizeDirection(direction);
+	public Page<User> paginate(UserSearchDTO userSearchDTO) {
+		Integer page = PaginationUtil.normalizePage(userSearchDTO.getPage());
+		Integer linesPerPage = userSearchDTO.getItemsPerPage();
+		Direction direction = Direction.valueOf((userSearchDTO.getDirection())); 
+		String orderBy = userSearchDTO.getOrderBy(); 
+		
+		Pageable pageable = PageRequest.of(page, linesPerPage, direction, orderBy);
 
-		Pageable pageable = PageRequest.of(page, linesPerPage, directionType, orderBy);
-
-		return userRepository.findAll(pageable);
+		try {
+			return userRepository.search(pageable, userSearchDTO.getFilters(), direction, orderBy);
+		} catch (ParseException e) {
+			throw new InvalidParameterException("createdBetween", "O campo ['createdBetween'] é inválido.");
+		}
 	}
 
 	public User create(UserCreateDTO userCreateDTO) {
