@@ -23,7 +23,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 	};
 
 	private static final String[] AUTHENTICATED_MATCHERS = {
-		"asdf"
+		
 	};
 
 	@Override

@@ -9,13 +9,13 @@ async.core-pool-size=2
 async.max-pool-size=10
 async.queue-capacity=500
 
-default.mail.sender=viniciuspugliesi20@gmail.com
-default.mail.recipient=viniciuspugliesi20@gmail.com
+default.mail.sender=
+default.mail.recipient=
 default.user.passwordExpiresAtDays=182
 
 spring.mail.host=smtp.gmail.com
-spring.mail.username=viniciuspugliesi20
-spring.mail.password=farxupbruozmockl
+spring.mail.username=
+spring.mail.password=
 spring.mail.properties.mail.smtp.auth = true
 spring.mail.properties.mail.smtp.socketFactory.port = 465
 spring.mail.properties.mail.smtp.socketFactory.class = javax.net.ssl.SSLSocketFactory
