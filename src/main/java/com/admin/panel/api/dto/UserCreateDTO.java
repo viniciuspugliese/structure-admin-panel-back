@@ -6,9 +6,10 @@ import java.util.Date;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import com.admin.panel.api.dto.annotations.Confirmed;
+import com.admin.panel.api.dto.annotations.EqualFields;
 import com.admin.panel.api.dto.annotations.Unique;
 
+@EqualFields(message = "A senha e sua confirmação não coincidem.", baseField = "password", matchField = "passwordConfirmation")
 public class UserCreateDTO implements Serializable {
 	private static final long serialVersionUID = -397299477621685324L;
 
@@ -23,7 +24,6 @@ public class UserCreateDTO implements Serializable {
 	private Date passwordExpiresAt;
 
 	@NotEmpty(message = "A senha é obrigatória.")
-	@Confirmed(message = "A senha e sua confirmação não coincidem.")
 	private String password;
 
 	@NotEmpty(message = "A confirmação da senha é obrigatória.")

@@ -19,13 +19,19 @@ public class DBService {
 	@Autowired
 	private BCryptPasswordEncoder bCrypt;
 
+	@Autowired
+	private TokenService tokenService;
+
 	public void instantiateTestDatabase() {
 		String password = bCrypt.encode("123");
 		Date passwordExpiresAt = Calendar.getInstance().getTime();
 
-		userRepository
-				.save(new User("Vinicius Pugliesi", "vinicius_pugliesi@outlook.com", password, passwordExpiresAt));
-
+		User user = userRepository.save(
+			new User("Vinicius Pugliesi", "vinicius_pugliesi@outlook.com", password, passwordExpiresAt)
+		);
+		
+		System.out.println(tokenService.createByRecoverPassword(user).getToken());
+		
 		userRepository.save(new User("Thales Erick Márcio Figueiredo", "thaleserickmarciofigueiredo@outlook.com",
 				password, passwordExpiresAt));
 

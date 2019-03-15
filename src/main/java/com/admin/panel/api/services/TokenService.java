@@ -9,6 +9,7 @@ import com.admin.panel.api.domain.enuns.TokenType;
 import com.admin.panel.api.repositories.TokenRepository;
 import com.admin.panel.api.security.JWTUtil;
 import com.admin.panel.api.security.UserSecurity;
+import com.admin.panel.api.security.exception.UnauthorizedException;
 
 @Service
 public class TokenService {
@@ -48,6 +49,11 @@ public class TokenService {
 	}
 
 	public void expires(String token) {
+		Token tokenEntity = tokenRepository.findByToken(token);
+		if (tokenEntity == null) {
+			throw new UnauthorizedException("O token é inválido ou não existe no sistema.");
+		}
+		
 		tokenRepository.delete(tokenRepository.findByToken(token));
 	}
 }

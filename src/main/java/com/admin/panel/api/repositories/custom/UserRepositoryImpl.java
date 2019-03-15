@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import com.admin.panel.api.domain.User;
 import com.admin.panel.api.dto.UserFilterDTO;
 import com.admin.panel.api.lang.Between;
+import com.admin.panel.api.security.SecurityContext;
 import com.admin.panel.api.services.util.DateTimeUtil;
 
 public class UserRepositoryImpl extends BaseCustomRepository<User, Integer> implements UserCustomRepository {
@@ -26,6 +27,8 @@ public class UserRepositoryImpl extends BaseCustomRepository<User, Integer> impl
 		String sql = handlerSql(pageable, userFilterDTO, direction, sortBy);
 		
 		TypedQuery<User> query = entityManager.createQuery(sql, User.class);
+		
+		query.setParameter("id", SecurityContext.getUserSecurity().getId());
 		
 		if (userFilterDTO.getName() != null && ! userFilterDTO.getName().isEmpty()) {
 			query.setParameter("name", "%" + userFilterDTO.getName() + "%");
@@ -53,6 +56,8 @@ public class UserRepositoryImpl extends BaseCustomRepository<User, Integer> impl
 	private String handlerSql(Pageable pageable, UserFilterDTO userFilterDTO, Direction direction, String sortBy) {
 		String sql = "SELECT u FROM User u ";
 		StringBuilder where = new StringBuilder();
+		
+		where.append(" u.id != :id AND ");
 		
 		if (userFilterDTO.getName() != null && ! userFilterDTO.getName().isEmpty()) {
 			where.append(" u.name LIKE :name AND ");

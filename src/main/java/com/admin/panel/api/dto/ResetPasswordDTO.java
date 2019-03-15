@@ -5,10 +5,11 @@ import java.io.Serializable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import com.admin.panel.api.dto.annotations.Confirmed;
+import com.admin.panel.api.dto.annotations.EqualFields;
 import com.admin.panel.api.dto.annotations.Exists;
 import com.admin.panel.api.dto.annotations.ValidToken;
 
+@EqualFields(message = "A senha e sua confirmação não coincidem.", baseField = "password", matchField = "passwordConfirmation")
 public class ResetPasswordDTO implements Serializable {
 	private static final long serialVersionUID = 7139894243200707543L;
 	
@@ -16,9 +17,8 @@ public class ResetPasswordDTO implements Serializable {
 	@Email(message = "O email é inválido.")
 	@Exists(message = "O email não existe no sistema.", table = "users", collumn = "email", conditions = "deleted_at IS NULL")
 	private String email;
-
+	
 	@NotEmpty(message = "A senha é obrigatória.")
-	@Confirmed(message = "A senha e sua confirmação não coincidem.")
 	private String password;
 
 	@NotEmpty(message = "A confirmação da senha é obrigatória.")
@@ -26,7 +26,7 @@ public class ResetPasswordDTO implements Serializable {
 	
 	@NotEmpty(message = "O token é obrigatório.")
 	@ValidToken(message = "O token é inválido.")
-	@Exists(message = "O token não existe no sistema.", table = "tokens", collumn = "token", conditions = "email = ${email}")
+	@Exists(message = "O token não existe no sistema.", table = "tokens", collumn = "token"/*, conditions = "email = ${email}"*/)
 	private String token;
 	
 	public ResetPasswordDTO() {

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.admin.panel.api.domain.User;
 import com.admin.panel.api.dto.RegisterDTO;
+import com.admin.panel.api.dto.UserDTO;
 import com.admin.panel.api.services.UserService;
 
 @RestController
@@ -21,7 +21,7 @@ public class RegisterController {
 	private UserService userService;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ResponseEntity<User> register(@Valid @RequestBody RegisterDTO registerDTO) {
-		return ResponseEntity.ok().body(userService.create(registerDTO));
+	public ResponseEntity<UserDTO> register(@Valid @RequestBody RegisterDTO registerDTO) {
+		return ResponseEntity.ok().body(new UserDTO(userService.create(registerDTO)));
 	}
 }

@@ -33,6 +33,4 @@ public class InvalidParameterException extends RuntimeException {
 	public void setField(String field) {
 		this.field = field;
 	}
-    
-    
 }
